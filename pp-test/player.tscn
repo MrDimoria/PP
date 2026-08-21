@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://d4bobbvp7kfb1"]
+
+[ext_resource type="Script" uid="uid://bkuyybybfdha0" path="res://player.gd" id="1_4flbx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4flbx"]
+albedo_color = Color(0.2627451, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_275og"]
+material = SubResource("StandardMaterial3D_4flbx")
+size = Vector3(1, 0.17675781, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_275og"]
+
+[node name="Player" type="CharacterBody3D" unique_id=1158825089]
+script = ExtResource("1_4flbx")
+
+[node name="Arms" type="Node3D" parent="." unique_id=272751605]
+
+[node name="RightArm" type="MeshInstance3D" parent="Arms" unique_id=1767806143]
+transform = Transform3D(0.13260269, 0, 0.25881904, 0, 1, 0, -0.035530783, 0, 0.9659258, 0.44788468, 0.21753043, -0.5869467)
+mesh = SubResource("BoxMesh_275og")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1082633430]
+shape = SubResource("CapsuleShape3D_275og")
+
+[node name="Head" type="Node3D" parent="." unique_id=1872284923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6714889, -0.31332427)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=823541160]
