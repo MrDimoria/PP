@@ -27,3 +27,75 @@ shape = SubResource("CapsuleShape3D_275og")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6714889, -0.31332427)
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=823541160]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=25996398]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=548867802]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Enemy1 Label" type="Label" parent="CanvasLayer/Control" unique_id=419262880]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 86.0
+offset_bottom = 47.0
+text = "Enemy 1:"
+
+[node name="Enemy 1 State Label" type="Label" parent="CanvasLayer/Control/Enemy1 Label" unique_id=1530834678]
+layout_mode = 0
+offset_left = 74.0
+offset_right = 75.0
+offset_bottom = 23.0
+text = "State
+"
+
+[node name="HasTargetLabel1" type="Label" parent="CanvasLayer/Control/Enemy1 Label/Enemy 1 State Label" unique_id=882539298]
+layout_mode = 0
+offset_left = -73.0
+offset_top = 22.0
+offset_right = -33.0
+offset_bottom = 45.0
+text = "Has target:"
+
+[node name="TargetStatusLabel1" type="Label" parent="CanvasLayer/Control/Enemy1 Label/Enemy 1 State Label/HasTargetLabel1" unique_id=1309521534]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 2.0
+offset_right = 129.0
+offset_bottom = 25.0
+
+[node name="Enemy2 Label" type="Label" parent="CanvasLayer/Control" unique_id=165275002]
+layout_mode = 0
+offset_left = 289.0
+offset_top = 27.0
+offset_right = 359.0
+offset_bottom = 50.0
+text = "Enemy 2:"
+
+[node name="Enemy 2 State Label" type="Label" parent="CanvasLayer/Control/Enemy2 Label" unique_id=552726172]
+layout_mode = 0
+offset_left = 74.0
+offset_right = 75.0
+offset_bottom = 23.0
+text = "State
+"
+
+[node name="HasTargetLabel2" type="Label" parent="CanvasLayer/Control/Enemy2 Label/Enemy 2 State Label" unique_id=583645354]
+layout_mode = 0
+offset_left = -73.0
+offset_top = 22.0
+offset_right = -33.0
+offset_bottom = 45.0
+text = "Has target:"
+
+[node name="TargetStatusLabel2" type="Label" parent="CanvasLayer/Control/Enemy2 Label/Enemy 2 State Label/HasTargetLabel2" unique_id=1057646772]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 2.0
+offset_right = 129.0
+offset_bottom = 25.0
