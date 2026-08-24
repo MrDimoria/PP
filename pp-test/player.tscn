@@ -71,10 +71,10 @@ offset_bottom = 25.0
 
 [node name="Enemy2 Label" type="Label" parent="CanvasLayer/Control" unique_id=165275002]
 layout_mode = 0
-offset_left = 289.0
-offset_top = 27.0
-offset_right = 359.0
-offset_bottom = 50.0
+offset_left = 616.0
+offset_top = 33.0
+offset_right = 686.0
+offset_bottom = 56.0
 text = "Enemy 2:"
 
 [node name="Enemy 2 State Label" type="Label" parent="CanvasLayer/Control/Enemy2 Label" unique_id=552726172]

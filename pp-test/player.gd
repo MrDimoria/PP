@@ -55,11 +55,13 @@ func _physics_process(delta: float) -> void:
 				
 	
 	if enemies[0].state_machine:	
-		state_label1.text = enemies[0].state_machine.get_current_node()
+		state_label1.text = str(enemies[0].state_machine.current_state)
 		target_status_label1.text = str(enemies[0].has_target)
+		
 	if enemies[1].state_machine:	
-		state_label2.text = enemies[1].state_machine.get_current_node()
+		state_label2.text = str(enemies[1].state_machine.current_state)
 		target_status_label2.text = str(enemies[1].has_target)
+	
 		
 	var dir_x = Input.get_action_strength("right") - Input.get_action_strength("left")
 	var dir_z = Input.get_action_strength("back") - Input.get_action_strength("forward")

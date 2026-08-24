@@ -4,6 +4,7 @@ class_name StateMachine
 @export var InitialState: State
 var current_state: State = null
 
+
 var states: Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
@@ -22,6 +23,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if current_state:
 		current_state.process(delta)
+		
 
 func _physics_process(delta: float) -> void:
 	if current_state:

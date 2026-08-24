@@ -2,13 +2,12 @@ class_name Enemy
 extends CharacterBody3D
 @onready var raycast = $Armature/RayCast3D
 @onready var nav_agent = $NavigationAgent3D
-@onready var anim_tree = $AnimationTree
 @onready var collisionshape = $CollisionShape3D
 @onready var sphere_check = $Armature/Area3D
 
 var player = null
 var hp = 100
-var state_machine 
+@onready var state_machine = $StateMachine
 var has_target: bool = false
 var exited_sense: bool = false
 var is_wandering = false
@@ -41,13 +40,15 @@ var stop_timer = 10
 
 func _ready() -> void:
 	player = get_node(player_path)
-	state_machine = anim_tree.get("parameters/playback")
 	raycast.add_exception(self)
 	half_sweep = deg_to_rad(sweep_degrees * 0.5)
 	nav_agent.avoidance_enabled = true
 	
 
 func _physics_process(delta: float) -> void:
+	
+	var new_velocity = velocity
+	new_velocity.y = 0
 	
 	sweep_sight(delta)
 	
@@ -56,6 +57,9 @@ func _physics_process(delta: float) -> void:
 			has_target = true
 			last_seen_pos = player.global_position
 			#draw_debug_sphere(raycast.get_collision_point(), 0.1)
+	
+	if new_velocity != Vector3.ZERO:
+		rotation.y = lerp(rotation.y, atan2(-velocity.x, -velocity.z), delta * 2)
 		
 	move_and_slide()
 	

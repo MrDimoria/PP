@@ -1,12 +1,19 @@
 extends State
 class_name EnemyChase
 
-var player: CharacterBody3D = null
 @onready var enemy: CharacterBody3D = get_parent().get_parent() 
-
+@onready var animation_tree: AnimationTree = $"../../AnimationTree"
+var player: CharacterBody3D = null
+var animation_playback: AnimationNodeStateMachinePlayback
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
+	animation_playback = animation_tree.get("parameters/playback")
+	
+func enter():
+	animation_playback.travel("Walking")
+	
+
 
 func process(delta: float):
 	
@@ -22,8 +29,6 @@ func process(delta: float):
 		emit_signal("Transitioned", self, "EnemyAttack")
 		
 		
-	
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_process(delta: float) -> void:
 	
@@ -32,5 +37,5 @@ func physics_process(delta: float) -> void:
 		
 	var next_position: Vector3 = enemy.nav_agent.get_next_path_position()
 	enemy.velocity = enemy.global_position.direction_to(next_position) * enemy.SPEED
-	enemy.rotation.y = lerp(enemy.rotation.y, atan2(-enemy.velocity.x, -enemy.velocity.z), delta * 10)
+	
 	
