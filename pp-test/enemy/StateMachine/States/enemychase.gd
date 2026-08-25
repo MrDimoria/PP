@@ -18,16 +18,16 @@ func enter():
 func process(delta: float):
 	
 	if enemy.has_target:
-		enemy.nav_agent.set_target_position(player.global_position)
-	
+		
+			enemy.nav_agent.set_target_position(player.global_position)
 	else:
+		
 		enemy.nav_agent.set_target_position(enemy.last_seen_pos)
 		if enemy.nav_agent.is_navigation_finished():
 			emit_signal("Transitioned", self, "EnemyWander")
 			
 	if enemy.global_position.distance_to(player.global_position) < enemy.ATTACK_RANGE:
 		emit_signal("Transitioned", self, "EnemyAttack")
-		
 		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_process(delta: float) -> void:

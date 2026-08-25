@@ -42,6 +42,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Debug"):
 		debug_on = !debug_on
 		
+		
+		
 	debug_visibility(debug_on)
 	
 	if debug_on:
@@ -106,6 +108,11 @@ func headbob(speed) -> Vector3:
 		return pos
 		
 func debug_visibility(debug) -> void:
+	for this in get_tree().get_nodes_in_group("enemies"):
+			if this is Enemy:
+				enemies.push_back(this)
+				this.nav_agent.set_debug_enabled(debug)
+				
 	enemy_label1.visible = debug
 	enemy_label2.visible = debug
 	state_label1.visible = debug

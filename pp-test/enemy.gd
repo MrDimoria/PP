@@ -4,6 +4,8 @@ extends CharacterBody3D
 @onready var nav_agent = $NavigationAgent3D
 @onready var collisionshape = $CollisionShape3D
 @onready var sphere_check = $Armature/Area3D
+@onready var animation_tree: AnimationTree = $AnimationTree
+var animation_playback: AnimationNodeStateMachinePlayback
 
 var player = null
 var hp = 100
@@ -32,7 +34,7 @@ var last_seen_pos:= Vector3.ZERO
 
 var sweep_time = 0
 var half_sweep = 0
-var sweep_degrees = 130
+var sweep_degrees = 20
 var wander_timer = 0
 var stop_timer = 10
 
@@ -40,16 +42,27 @@ var stop_timer = 10
 
 func _ready() -> void:
 	player = get_node(player_path)
+	animation_playback = animation_tree.get("parameters/playback")
 	raycast.add_exception(self)
 	half_sweep = deg_to_rad(sweep_degrees * 0.5)
-	nav_agent.avoidance_enabled = true
+	nav_agent.set_avoidance_enabled(true)
+	nav_agent.set_avoidance_priority(randf_range(0.1,1))
 	
 
 func _physics_process(delta: float) -> void:
-	
-	var new_velocity = velocity
-	new_velocity.y = 0
-	
+	var state = animation_playback.get_current_node()
+
+	if !nav_agent.is_target_reachable():
+		emit_signal("Transitioned", self , "EnemyWander")
+		
+	if state == "Attack":
+		look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z))
+	else:
+		var new_velocity = velocity
+		new_velocity.y = 0
+		
+		if new_velocity != Vector3.ZERO:
+			rotation.y = lerp(rotation.y, atan2(-velocity.x, -velocity.z), delta * 2)
 	sweep_sight(delta)
 	
 	if raycast.is_colliding():
@@ -58,8 +71,7 @@ func _physics_process(delta: float) -> void:
 			last_seen_pos = player.global_position
 			#draw_debug_sphere(raycast.get_collision_point(), 0.1)
 	
-	if new_velocity != Vector3.ZERO:
-		rotation.y = lerp(rotation.y, atan2(-velocity.x, -velocity.z), delta * 2)
+	
 		
 	move_and_slide()
 	
@@ -111,4 +123,6 @@ func pick_random_wander_point() -> Vector3:
 func sweep_sight(delta: float) -> void:
 	sweep_time += delta * sweep_speed
 	var angle = sin(sweep_time) * half_sweep
+	var angle2 = cos(sweep_time) * half_sweep
 	raycast.rotation.z = angle 
+	raycast.rotation.x = angle2
