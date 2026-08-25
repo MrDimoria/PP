@@ -52,8 +52,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var state = animation_playback.get_current_node()
 
-	if !nav_agent.is_target_reachable():
-		emit_signal("Transitioned", self , "EnemyWander")
+	#if !nav_agent.is_target_reachable():
+		#emit_signal("Transitioned", self , "EnemyWander")
 		
 	if state == "Attack":
 		look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z))
