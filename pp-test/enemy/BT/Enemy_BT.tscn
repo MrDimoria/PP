@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://7nvk6ci0u80a"]
+
+[ext_resource type="Texture2D" uid="uid://y45snn71djvq" path="res://nick.png" id="1_ig1mf"]
+[ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="1_xv18r"]
+[ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="2_2en41"]
+[ext_resource type="Script" uid="uid://cg016dbe7gs1x" path="res://addons/beehave/nodes/composites/sequence.gd" id="3_j7e2d"]
+[ext_resource type="Script" uid="uid://d1t500x3av68r" path="res://enemy/BT/is_player_visible.gd" id="4_qcoy5"]
+[ext_resource type="Script" uid="uid://d14tmoegs5jhh" path="res://enemy/BT/chase_player.gd" id="5_ig1mf"]
+[ext_resource type="Script" uid="uid://cm1ggfb3i1ei3" path="res://enemy/BT/attack_player.gd" id="6_5ltia"]
+[ext_resource type="Script" uid="uid://dp5maktga06su" path="res://enemy/BT/move_to_patrol_point.gd" id="7_4iq35"]
+[ext_resource type="Script" uid="uid://c15ois0txcheq" path="res://enemy/BT/wait_at_patrol_point.gd" id="8_7hd5i"]
+
+[sub_resource type="GDScript" id="GDScript_xv18r"]
+script/source = "extends CharacterBody3D
+
+@onready var beehave_tree = $BeehaveTree
+
+#Add patrol points to the scene
+
+
+
+func _ready():
+	#Adding enemy to a group if needed for conditions
+	add_to_group(\"bt_enemies\")
+	
+	#Set up patrol points in the move_to_patrol_points script
+	var patrol_script = $BeehaveTree/SelectorComposite/PatrolSequence/MoveToPatrolPoint
+	#patrol_script.patrol_points = [patrol_point1.get_path(), patrol_point2.get_path()]
+	
+func _physics_process(delta: float) -> void:
+	rotation.y = lerp(rotation.y, atan2(-velocity.x, -velocity.z), delta * 2)
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_275og"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcoy5"]
+albedo_texture = ExtResource("1_ig1mf")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_275og"]
+material = SubResource("StandardMaterial3D_qcoy5")
+
+[node name="EnemyBt" type="CharacterBody3D" unique_id=1152353194]
+script = SubResource("GDScript_xv18r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1348808107]
+shape = SubResource("CapsuleShape3D_275og")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=238910278]
+mesh = SubResource("CapsuleMesh_275og")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=806282268]
+transform = Transform3D(0.5480088, 0, 0, 0, -0.13005175, -0.72277606, 0, 0.5782599, -0.16255376, 0.090949416, -0.34381396, -0.31621957)
+mesh = SubResource("CapsuleMesh_275og")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1113573599]
+
+[node name="BeehaveTree" type="Node" parent="." unique_id=1873383630 node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("1_xv18r")
+blackboard = NodePath("@Node@33983")
+actor = NodePath("..")
+metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
+
+[node name="SelectorComposite" type="Node" parent="BeehaveTree" unique_id=1796805134]
+script = ExtResource("2_2en41")
+metadata/_custom_type_script = "uid://8hn4kne15ac5"
+
+[node name="AttackSequence" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=2088538835]
+script = ExtResource("3_j7e2d")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="IsPlayerVisible" type="Node" parent="BeehaveTree/SelectorComposite/AttackSequence" unique_id=1543633127]
+script = ExtResource("4_qcoy5")
+metadata/_custom_type_script = "uid://d1t500x3av68r"
+
+[node name="ChasePlayer" type="Node" parent="BeehaveTree/SelectorComposite/AttackSequence" unique_id=1423675826]
+script = ExtResource("5_ig1mf")
+metadata/_custom_type_script = "uid://d14tmoegs5jhh"
+
+[node name="AttackPlayer" type="Node" parent="BeehaveTree/SelectorComposite/AttackSequence" unique_id=310466653]
+script = ExtResource("6_5ltia")
+metadata/_custom_type_script = "uid://cm1ggfb3i1ei3"
+
+[node name="PatrolSequence" type="Node" parent="BeehaveTree/SelectorComposite" unique_id=1258984123]
+script = ExtResource("3_j7e2d")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="MoveToPatrolPoint" type="Node" parent="BeehaveTree/SelectorComposite/PatrolSequence" unique_id=567395465]
+script = ExtResource("7_4iq35")
+metadata/_custom_type_script = "uid://dp5maktga06su"
+
+[node name="WaitAtPatrolPoint" type="Node" parent="BeehaveTree/SelectorComposite/PatrolSequence" unique_id=1418341406]
+script = ExtResource("8_7hd5i")
+metadata/_custom_type_script = "uid://c15ois0txcheq"
