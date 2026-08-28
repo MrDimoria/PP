@@ -10,6 +10,7 @@ extends CharacterBody3D
 @onready var target_status_label2 =$"CanvasLayer/Control/Enemy2 Label/Enemy 2 State Label/HasTargetLabel2/TargetStatusLabel2"
 @onready var enemy_label1 = $"CanvasLayer/Control/Enemy1 Label"
 @onready var enemy_label2 = $"CanvasLayer/Control/Enemy2 Label"
+@onready var raycast = $Head/RayCast3D
 
 const MOUSE_SENSITIVITY = 0.2
 @export var GRAVITY = 9.82 
@@ -38,7 +39,8 @@ func _ready()->void:
 			enemies.push_back(node)
 	
 func _physics_process(delta: float) -> void:
-	
+	if Input.is_action_just_pressed("Quit"):
+		get_tree().quit()
 	if Input.is_action_just_pressed("Debug"):
 		debug_on = !debug_on
 		
@@ -54,6 +56,26 @@ func _physics_process(delta: float) -> void:
 			else:
 				Engine.time_scale = 1
 				debug_time = false
+		
+		if Input.is_action_just_pressed("Spawn_Enemy"):
+			if raycast.is_colliding():
+				var scene = preload("res://enemy.tscn")
+				var instance = scene.instantiate()
+				instance.position = raycast.get_collision_point() + Vector3.UP * 10.0
+				instance.add_to_group("enemies")
+				get_tree().current_scene.add_child(instance)
+				
+		if Input.is_action_just_pressed("Spawn_Nicklas"):
+			if raycast.is_colliding():
+				var scene = preload("res://enemy/BT/Enemy_BT.tscn")
+				var instance = scene.instantiate()
+				instance.position = raycast.get_collision_point() + Vector3.UP * 10.0
+				instance.add_to_group("enemies")
+				get_tree().current_scene.add_child(instance)
+			
+		if Input.is_action_just_pressed("Reset_Level"):
+			get_tree().change_scene_to_file("res://TestScene.tscn")
+	
 				
 	
 	if enemies[0].state_machine:	

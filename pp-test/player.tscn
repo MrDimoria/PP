@@ -11,7 +11,7 @@ size = Vector3(1, 0.17675781, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_275og"]
 
-[node name="Player" type="CharacterBody3D" unique_id=1158825089]
+[node name="Player" type="CharacterBody3D" unique_id=1158825089 groups=["Player"]]
 script = ExtResource("1_4flbx")
 
 [node name="Arms" type="Node3D" parent="." unique_id=272751605]
@@ -25,6 +25,11 @@ shape = SubResource("CapsuleShape3D_275og")
 
 [node name="Head" type="Node3D" parent="." unique_id=1872284923]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6714889, -0.31332427)
+
+[node name="RayCast3D" type="RayCast3D" parent="Head" unique_id=1206472648]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, -0.26114488, -0.27854973)
+target_position = Vector3(0, -1, 200)
+debug_shape_custom_color = Color(0, 0.44705883, 1, 1)
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=823541160]
 

@@ -7,7 +7,7 @@ extends CharacterBody3D
 @onready var animation_tree: AnimationTree = $AnimationTree
 var animation_playback: AnimationNodeStateMachinePlayback
 
-var player = null
+var player: Player = null
 var hp = 100
 @onready var state_machine = $StateMachine
 var has_target: bool = false
@@ -17,7 +17,7 @@ var last_seen_pos:= Vector3.ZERO
 
 
 @export var GRAVITY = 20
-@export var player_path : NodePath
+
 @export var SPEED = 0.9
 @export var wander_speed = 0.9
 @export var JUMP_VELOCITY = 4.5
@@ -41,7 +41,11 @@ var stop_timer = 10
 
 
 func _ready() -> void:
-	player = get_node(player_path)
+	player = get_tree().get_first_node_in_group("Player") as Player
+	if player == null:
+		push_error("Enemy could not find a node in the 'player' group!")
+	
+		
 	animation_playback = animation_tree.get("parameters/playback")
 	raycast.add_exception(self)
 	half_sweep = deg_to_rad(sweep_degrees * 0.5)
@@ -50,6 +54,9 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
+	if player == null:
+		player = get_tree().get_first_node_in_group("player") as Player
+	
 	var state = animation_playback.get_current_node()
 
 	#if !nav_agent.is_target_reachable():
@@ -112,6 +119,7 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 		last_seen_pos = player.global_position
 		exited_sense = true
 		has_target = false
+		
 		#draw_debug_sphere(last_seen_pos, 0.1)
 		
 func pick_random_wander_point() -> Vector3:
